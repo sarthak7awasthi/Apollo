@@ -51,6 +51,7 @@ class Mongo:
     #need assignments table
 
     def createLecture(self, course_name: str, name: str, description: str, content: str, duration: int, resources: list, owner: str) -> bool:
+        return False
         course_id = None
         course = None
         course_collection = self.getCollection("Courses")

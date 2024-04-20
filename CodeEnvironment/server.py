@@ -1,9 +1,17 @@
+import os
 from flask import Flask, request, jsonify
 import subprocess
 from flask_cors import CORS
+from db import Mongo
 
 app = Flask(__name__)
 CORS(app)
+
+URI = os.environ.get("URI")
+if not URI:
+    raise RuntimeError("MONGO DB URI NOT SET")
+
+mongodb = Mongo(URI, "Codefest24")
 
 @app.route('/runcode', methods=['POST'])
 def run_code():
@@ -67,6 +75,57 @@ def execute_c_code(code):
         # Clean up temporary files
         subprocess.run(['rm', '-f', 'temp.c', 'temp'])
 
+
+
+@app.errorhandler(400)
+def bad_request_error(error):
+    return jsonify({'error': 'Bad Request'}), 400
+
+@app.route('/cc', methods=['POST'])
+def createCourse():
+    if request.is_json:
+        data = request.json
+        name = data.get("name")
+        owner = data.get("owner")
+        language = data.get("language")
+        description = data.get("description")
+        
+        if name and owner and language and description:
+            create_status = mongodb.createCourse(name, owner, language, description)
+            return jsonify({}), 200 if create_status else 400
+        else:
+            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+    else:
+        return jsonify({'error': 'Invalid JSON data in request'}), 400
+
+
+
+@app.route('/cl', methods=['POST'])
+def createLecture():
+    if request.is_json:
+        data = request.json
+        course_name = data.get("course_name")
+        name = data.get("name")
+        description = data.get("description")
+        content = data.get("content")
+        duration = data.get("duration")
+        resources = data.get("resources")
+        owner = data.get("owner")
+
+        if data and course_name and name and description and content and duration and resources:
+            create_status = mongodb.createLecture(course_name, name, description, content, duration, resources, owner)
+            return jsonify({}), 200 if create_status else 400
+        else:
+            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+
+    else:
+        return jsonify({'error': 'Invalid JSON data in request'}), 400
+
+
+
+
+    
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=60000)
 
