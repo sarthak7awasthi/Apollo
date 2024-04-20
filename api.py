@@ -51,8 +51,7 @@ def createLecture():
         if data and course_name and name and description and content and duration and resources:
             create_status = mongodb.createLecture(course_name, name, description, content, duration, resources, owner)
             if create_status:
-
-            return jsonify({}), 200 if create_status else 400
+                return jsonify({}), 200 if create_status else 400
         else:
             return jsonify({'error': 'Invalid data. All fields are required.'}), 400
 
