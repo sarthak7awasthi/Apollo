@@ -122,6 +122,31 @@ def createLecture():
         return jsonify({'error': 'Invalid JSON data in request'}), 400
 
 
+@app.route('/ca', methods=['POST'])
+def createAssignment():
+    if request.is_json:
+        data = request.json
+        print(data)
+
+        name = data.get("name")
+        description = data.get("description")
+        duration = data.get("duration")
+        agents = data.get("agents")
+        course_name = data.get("course_name")
+        lecture_name = data.get("lecture_name")
+        owner = data.get("owner")
+
+        if name and description and duration and course_name and lecture_name and owner:
+            create_status = mongodb.createAssignment(name, description, duration, agents, course_name, lecture_name, owner)
+            return jsonify({}), 200 if create_status else 400
+        else:
+            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+
+    else:
+        return jsonify({'error': 'Invalid JSON data in request'}), 400
+
+
+
 
 
     

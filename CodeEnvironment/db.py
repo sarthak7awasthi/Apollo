@@ -11,20 +11,21 @@ class Mongo:
             self.__client = MongoClient(uri)
         except Exception as e:
             raise RuntimeError(e)
-    
+
 
     def setDatabase(self, db_name: str) -> None:
-       if db_name not in self.__client.list_database_names():
-           raise ValueError("Database '" + db_name + "' does not exist.")
-       self.__db = self.__client[db_name]
-    
+        if db_name not in self.__client.list_database_names():
+            raise ValueError("Database '" + db_name + "' does not exist.")
+        self.__db = self.__client[db_name]
+
     def getCollection(self, collection_name: str):
         if collection_name not in self.__db.list_collection_names():
             raise ValueError("Collection '" + collection_name + "' does not exist in the specified database.")
         return self.__db[collection_name]
-    
-    
-    
+
+
+
+
     def createCourse(self, name: str, owner:str, language:str, description: str) -> bool:
 
         query = {"name": name, "owner": owner}
@@ -38,7 +39,7 @@ class Mongo:
                 "language": language,
                 "description": description,
                 "lectures": [],
-        }
+                }
 
         try:
             collection = self.getCollection("Courses")
@@ -56,7 +57,6 @@ class Mongo:
         course_collection = self.getCollection("Courses")
         try:
             course = course_collection.find_one({'name': course_name, 'owner': owner})
-            print(course)
             if course:
                 course_id = course['_id']
                 query = {"course": course_id, "name": name}
@@ -72,21 +72,22 @@ class Mongo:
             if course:
                 course_id = course['_id']
                 lecture = {
-                    "course": course_id,
-                    "name": name,
-                    "owner": owner,
-                    "description": description,
-                    "content": content,
-                    "duration": duration,
-                    "resources": resources
-                }
+                        "course": course_id,
+                        "name": name,
+                        "owner": owner,
+                        "description": description,
+                        "content": content,
+                        "duration": duration,
+                        "resources": resources,
+                        "assignments": [],
+                        }
                 lextures_collection = self.getCollection("Lectures")
                 res = lextures_collection.insert_one(lecture)
                 #insert lecture id into course's lectures array
                 course_collection.update_one(
-                {"_id": course_id},
-                {"$push": {"lectures": res.inserted_id}}
-                )
+                        {"_id": course_id},
+                        {"$push": {"lectures": res.inserted_id}}
+                        )
 
                 return True
             else:
@@ -95,12 +96,49 @@ class Mongo:
             print(e)
             return False
 
+    def createAssignment(self, name: str, description: str, duration: int, agents: list, course_name: str, lecture_name: str, owner: str) -> bool:
+        course_id = None
+        lecture_id = None
+        course_collection = self.getCollection("Courses")
+        lectures_collection = self.getCollection("Lectures")
+        assignment_collection = self.getCollection("Assignments")
+        try:
+            course = course_collection.find_one({'name': course_name, 'owner': owner})
+            if course:
+                course_id = course['_id']
+                print(course_id)
+                print(lecture_name)
+                lecture = lectures_collection.find_one({'course': course_id, 'name': lecture_name})
+                print(lecture)
+                if lecture:
+                    lecture_id = lecture['_id']
+                    query = {"lecture": lecture_id, "name": name}
+                    if self.__db["Assignments"].count_documents(query) > 0:
+                        print("An assignment with the same name from the same lecture already exists.")
+                        return False
+                    assignment = {
+                        "name": name,
+                        "lecture": lecture_id,
+                        "description": description,
+                        "durtion": duration,
+                        "agents": agents
+                    }
+                    res = assignment_collection.insert_one(assignment)
+                    lectures_collection.update_one({"_id": lecture_id}, {"$push": {"assignments": res.inserted_id}})
+                    return True
+        except Exception:
+            print("could not get course id")
+            return False
+
+        return False
+
+
+
+
 
 
 #insert one vs insert many
 
-LECTURES = {}
-
-if __name__ == "__main__":   
-    mongodb = Mongo(os.environ.get("URI"), "Codefest24")
-    mongodb.createCourse("tc2", "me", ["en", "fr"], "description2")
+#if __name__ == "__main__":   
+#    mongodb = Mongo(os.environ.get("URI"), "Codefest24")
+#    mongodb.createCourse("tc2", "me", ["en", "fr"], "description2")
