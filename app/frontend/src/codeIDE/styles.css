@@ -1,0 +1,9 @@
+.highlight-line {
+    
+    background-color: rgba(255, 255, 0, 0.3); /* Yellow background with 30% opacity */
+}
+
+.highlight-line2 {
+
+    background-color: transparent;
+}

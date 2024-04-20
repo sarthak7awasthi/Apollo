@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  cenv:
+    build:
+      context: ./CodeEnvironment
+      dockerfile: ./Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - custom-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - "5173:5173"  # Port mapping for React frontend
+  
+    volumes:
+      - /app/frontend/src  # Mount frontend code directory
+    networks:
+      - custom-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    mem_limit: 2g
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:8000"  # Port mapping for Node.js backend
+     
+    volumes:
+      - /app/backend  # Mount backend code directory
+    networks:
+      - custom-network
+
+networks:
+  custom-network:
+    driver: bridge
