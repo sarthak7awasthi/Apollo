@@ -51,12 +51,12 @@ class Mongo:
     #need assignments table
 
     def createLecture(self, course_name: str, name: str, description: str, content: str, duration: int, resources: list, owner: str) -> bool:
-        return False
         course_id = None
         course = None
         course_collection = self.getCollection("Courses")
         try:
             course = course_collection.find_one({'name': course_name, 'owner': owner})
+            print(course)
             if course:
                 course_id = course['_id']
                 query = {"course": course_id, "name": name}
