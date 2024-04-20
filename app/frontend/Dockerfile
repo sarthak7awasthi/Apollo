@@ -15,7 +15,7 @@ RUN if [ -d "node_modules" ]; then rm -Rf node_modules; fi
 RUN if [ -f "package-lock.json" ]; then rm package-lock.json; fi
 RUN npm install
 
-RUN npm i @rollup/rollup-linux-x64-gnu
+
 
 EXPOSE 5173
 

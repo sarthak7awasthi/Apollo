@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 
 import CustomEditor from './codeIDE/CustomEditor';
+import Avatar from './avatar';
 
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
     return (<>
     
          <CustomEditor />
+         <Avatar />
       
         </>
     );
