@@ -9,7 +9,7 @@ import Logo from '../assets/Logo.png';
 export default function LoginScreen() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
@@ -20,11 +20,11 @@ export default function LoginScreen() {
     };
 
     const handleTeacherLogin = () => {
-        Navigate('/teacherPage');
+        navigate('/teacherPage');
     };
 
     const handleStudentLogin = () => {
-        Navigate('/studentPage');
+        navigate('/studentPage');
     };
 
     return (

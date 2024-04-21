@@ -1,52 +1,38 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import CoursesList from './teacher/courses/CoursesList';
+
 import LoginScreen from './screens/loginScreen';
 import StudentScreen from './screens/studentScreen';
 import TeacherScreen from './screens/teacherScreen';
 import MakeModuleScreen from './screens/makeModuleScreen';
 import AssignmentScreen from './screens/assignmentScreen';
+import Lecture from './screens/lecture';
+import AssignmentPage from './screens/assignment';
 
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
 
-import LecturesPage from './teacher/courses/Lectures';
-import CustomEditor from './codeIDE/CustomEditor';
-import QuizUI from './quizTaker/Quiz';
+// // Your web app's Firebase configuration
+// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyArKDX_pVh40E7P1ptXaTkpeyI79qerb0c",
+//   authDomain: "phillycodefest2024.firebaseapp.com",
+//   projectId: "phillycodefest2024",
+//   storageBucket: "phillycodefest2024.appspot.com",
+//   messagingSenderId: "493007053222",
+//   appId: "1:493007053222:web:b76e50b8181c623805af67",
+//   measurementId: "G-KNX9E4E3S8"
+// };
 
-import CreateCourse from './teacher/courses/CreateCourse';
-import CreateLecture from './teacher/courses/CreateLecture';
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
 
 function App() {
-
-  const lecturesData = [
-    {
-      lectureName: 'Introduction to React',
-      lectureDescription: 'This lecture covers the basics of React.js',
-      lectureDuration: '1 hour',
-      lectureResources: ['slides.pdf', 'code.zip'],
-    },
-    {
-      lectureName: 'State Management in React',
-      lectureDescription: 'Learn how to manage state in React applications',
-      lectureDuration: '45 minutes',
-      lectureResources: ['video.mp4', 'code.zip'],
-    }
-  ];
-
-
-  const coursesData = [
-    {
-      lectureName: 'Introduction to MongoDB',
-      lectureDescription: 'This lecture covers the basics of React.js',
-      lectureDuration: '1 hour',
-      lectureResources: ['slides.pdf', 'code.zip'],
-    },
-    {
-      lectureName: 'State Management in Java',
-      lectureDescription: 'Learn how to manage state in React applications',
-      lectureDuration: '45 minutes',
-      lectureResources: ['video.mp4', 'code.zip'],
-    }
-  ];
   return (
     <div className="App">
       <Routes>
@@ -56,23 +42,8 @@ function App() {
         <Route path="/teacherPage" element={<TeacherScreen />} />
         <Route path="/makeModule" element={<MakeModuleScreen />} />
         <Route path="/assignmentPage" element={<AssignmentScreen />} />
-
-
-
-        <Route path="/Lectures" element={<LecturesPage courseName="Advanced React Course" lectures={lecturesData} />} />
-        <Route path="/editor" element={<CustomEditor />} />
-        <Route path="/quiz" element={<QuizUI />} />
-
-        <Route path="/CreateCourse" element={<CreateCourse />} />
-        <Route path="/CreateLecture" element={<CreateLecture />} />
-        <Route path="/Courses" element={<CoursesList courseName="Advanced React Course" lectures={coursesData}/>} />
-
-
-        
-
-
-      
-
+        <Route path='/lecturePage/:courseName/:lectureIndex' element={<Lecture/>}/>
+        <Route path='/assignments/:courseName' element={<AssignmentPage/>}/>
       </Routes>
     </div>
   );

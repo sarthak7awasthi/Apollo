@@ -4,6 +4,10 @@ import subprocess
 from flask_cors import CORS
 from db import Mongo
 from manim_runner import text_to_animation
+from manim_runner import create_thread, init_assistant
+from openai import OpenAI
+import json
+import requests
 
 app = Flask(__name__)
 CORS(app)
@@ -23,7 +27,6 @@ def run_manim():
     if not path_to_vid:
         return jsonify({'error': 'Error generating animation'}), 400
     return jsonify({'path':path_to_vid}), 200
-
 
 @app.route('/runcode', methods=['POST'])
 def run_code():
@@ -297,6 +300,72 @@ def editLectureContent():
     return jsonify({"error": "Invalid JSON data"}), 400
 
 
+promptForContentViz = '''
+
+You are a professor at Minerva University and you will be tasked with creating lectures. The lectures should be informative, clear, avoid jargons at all cost. Students value correctness of the information and how simple it is to understand. Not to lose at the simplicity, you should dive deep into a context. While designing the lecture, you would also populate these fields:
+visualisation: A well detailed prompt for creating the visualisation. be descriptive and very of your visualizations thats will go with your lecture. Be aware that the visualisation would be done through manim
+The visual should be very simple to generate too.
+
+
+You must output in this json format
+{
+"content": string,
+"visualisation" : "...."
+}
+
+''' 
+
+@app.route('/generate-lecture-content', methods=['POST'])
+def generate_lecture_description():
+    try: 
+        data = request.json
+        courseName = data["courseName"]
+        ASSISTANT_ID = os.getenv('ASSISTANT_ID')
+        API_KEY = os.getenv('OPENAI_API_KEY')
+        mongodb.createCourse(
+            name = courseName,
+            owner = "robin",
+            language = data["language"][0],
+            description = data["courseDescription"],
+        ) 
+
+        client = OpenAI(api_key=API_KEY)
+        ass1, instruction = init_assistant(client)
+        if not ass1:
+            ass1 = ASSISTANT_ID
+        url = "http://localhost:3000/addLectures/"
+        for idx, lecture in enumerate(data["lectures"]):
+            lecture_name = lecture["lectureName"]
+            lecture_description = lecture["lectureDescription"]
+            lecture_duration = lecture["lectureDuration"]
+            thread = create_thread(client, promptForContentViz+f"for lecture: {lecture_name} {lecture_description} {lecture_duration}")
+            run = client.beta.threads.runs.create_and_poll(thread_id=thread, assistant_id=ass1)
+        
+                
+
+            if run.status == 'completed':
+                messages = client.beta.threads.messages.list(thread_id=thread)
+                output = json.loads(messages.data[0].content[0].text.value)
+                data["lectures"][idx]["lectureContent"] = output["content"]
+                data["lectures"][idx]["lectureVisualization"] = output["visualisation"]
+                
+                payload = json.dumps({
+                        "courseName": courseName,
+                        "lectureIndex": idx,
+                        "courseContent": output["content"]
+                    })
+                headers = {
+                        'Content-Type': 'application/json'
+                    }
+    
+                requests.post(url, headers=headers, data=payload)
+                mongodb.createLecture(course_name=courseName,name=lecture_name, description=lecture_description, content=output["content"], duration=0, resources=[], owner="robin",)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+        
+    print(data)
+    return data
 
 @app.route("/test")
 def test():
