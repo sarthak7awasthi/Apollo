@@ -13,7 +13,7 @@ case $1 in
   "cc")
     #add course
     curl -X POST http://localhost:60000/cc -d '{
-    "name": "My Course 1",
+    "name": "My Course 2",
     "owner": "erick",
     "language": "en",
     "description": "My first course"

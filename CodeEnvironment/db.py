@@ -253,6 +253,11 @@ class Mongo:
         print(users)
         return json.loads(json_util.dumps(users))
 
+    def getUser(self, username):
+        user_collection = self.getCollection("Users")
+        user = user_collection.find_one({"name": username})
+        return json.loads(json_util.dumps(user))
+
 
 
 
