@@ -1,0 +1,82 @@
+.studentDash_container{
+    background-color: #E5F0F4;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.student_dash{
+    /* background-color: red; */
+    display: flex;
+    width: 100%;
+    height: 80%;
+    margin: 100px;
+    margin-top: 100px;
+    flex-direction: row;
+}
+
+.left_bar_container{
+    background-color: #ffffff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* justify-content: center; */
+    align-items: center;
+    margin-right: 15px;
+    border-radius: 15px;
+}
+
+.logoImg{
+    margin-top: 20px;
+    width: 20%;
+    height: auto;
+}
+
+.leftbar_classes_container{
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.class_1{
+    margin: 10px;
+    margin-top: 15px;
+    background-color: #ffffff;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.class_1:hover{
+    background-color: #E5F0F4;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.classImg{
+    margin-left: 10px;
+}
+
+.class_name{
+    margin-left: 10px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.right_pannel{
+    background-color: #ffffff;
+    height: 100%;
+    flex: 4;
+    margin-left: 15px;
+    border-radius: 15px;
+    display: flex;
+}
+

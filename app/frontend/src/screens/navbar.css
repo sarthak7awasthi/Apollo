@@ -1,0 +1,35 @@
+.navbar_container{
+    background-color: green;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.userBox{
+    background-color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.userImg{
+    margin-left: 10px;
+    justify-content: center;
+    align-content: center;
+}
+
+.userName{
+    margin-left: 10px;
+    margin-top: 5px;
+    /* display: flex; */
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.userName p{
+    margin-top: 5px;
+}
