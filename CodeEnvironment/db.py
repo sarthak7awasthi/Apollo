@@ -225,6 +225,23 @@ class Mongo:
         assignment = assignment_collection.find_one({"_id": assignment_id})
         return json.loads(json_util.dumps(assignment))
 
+    def getCourseInfo(self, course_id):
+        course_collection = self.getCollection("Courses")
+        course_id = ObjectId(course_id)
+        course = course_collection.find_one({"_id": course_id})
+        return json.loads(json_util.dumps(course))
+
+    def getLectureInfo(self, lecture_id):
+        lecture_collection = self.getCollection("Lectures")
+        lecture_id = ObjectId(lecture_id)
+        lecture = lecture_collection.find_one({"_id": lecture_id})
+        return json.loads(json_util.dumps(lecture))
+
+    def getAssignmentInfo(self, assignment_id):
+        assignment_collection = self.getCollection("Assignments")
+        assignment_id = ObjectId(assignment_id)
+        assignment = assignment_collection.find_one({"_id": assignment_id})
+        return json.loads(json_util.dumps(assignment))
 
 
 

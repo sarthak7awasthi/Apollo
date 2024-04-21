@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Corrected import
 
-import { getUsersCourses } from '../../api';
+import { getUsersCourses, getCourseInfo } from '../../api';
 
 export const Home = () => {
     const [courses, setCourses] = useState(null); // State to hold the courses data
@@ -20,6 +20,7 @@ export const Home = () => {
     // useEffect to run once on component mount
     useEffect(() => {
         getUsersCourses("erick");
+        getCourseInfo("66246232a3d009d1364dc959");
         fetchCourses();
     }, []); // Empty dependency array means this effect runs only once after the initial render
 

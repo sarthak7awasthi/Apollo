@@ -16,15 +16,17 @@ mongodb = Mongo(URI, "Codefest24")
 @app.route('/runcode', methods=['POST'])
 def run_code():
     data = request.json
-    language = data.get('language')
-    code = data.get('code')
+    if data:
+        language = data.get('language')
+        code = data.get('code')
 
-    if language == 'python':
-        return execute_python_code(code)
-    elif language == 'c':
-        return execute_c_code(code)
-    else:
-        return jsonify({'error': 'Invalid language specified'}), 400
+        if language == 'python':
+            return execute_python_code(code)
+        elif language == 'c':
+            return execute_c_code(code)
+        else:
+            return jsonify({'error': 'Invalid language specified'}), 400
+    return jsonify({'error': 'runcode error'}), 400
 
 def execute_python_code(code):
     try:
@@ -85,18 +87,20 @@ def bad_request_error(error):
 def createCourse():
     if request.is_json:
         data = request.json
-        name = data.get("name")
-        owner = data.get("owner")
-        language = data.get("language")
-        description = data.get("description")
-        
-        if name and owner and language and description:
-            create_status = mongodb.createCourse(name, owner, language, description)
-            return jsonify({}), 200 if create_status else 400
-        else:
-            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+        if data:
+            name = data.get("name")
+            owner = data.get("owner")
+            language = data.get("language")
+            description = data.get("description")
+            
+            if name and owner and language and description:
+                create_status = mongodb.createCourse(name, owner, language, description)
+                return jsonify({}), 200 if create_status else 400
+            else:
+                return jsonify({'error': 'Invalid data. All fields are required.'}), 400
     else:
         return jsonify({'error': 'Invalid JSON data in request'}), 400
+    return jsonify({'error': 'Invalid JSON data in request'}), 400
 
 
 
@@ -104,45 +108,48 @@ def createCourse():
 def createLecture():
     if request.is_json:
         data = request.json
-        course_name = data.get("course_name")
-        name = data.get("name")
-        description = data.get("description")
-        content = data.get("content")
-        duration = data.get("duration")
-        resources = data.get("resources")
-        owner = data.get("owner")
+        if data:
+            course_name = data.get("course_name")
+            name = data.get("name")
+            description = data.get("description")
+            content = data.get("content")
+            duration = data.get("duration")
+            resources = data.get("resources")
+            owner = data.get("owner")
 
-        if data and course_name and name and description and content and duration and resources:
-            create_status = mongodb.createLecture(course_name, name, description, content, duration, resources, owner)
-            return jsonify({}), 200 if create_status else 400
-        else:
-            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+            if data and course_name and name and description and content and duration and resources:
+                create_status = mongodb.createLecture(course_name, name, description, content, duration, resources, owner)
+                return jsonify({}), 200 if create_status else 400
+            else:
+                return jsonify({'error': 'Invalid data. All fields are required.'}), 400
 
     else:
         return jsonify({'error': 'Invalid JSON data in request'}), 400
+    return jsonify({'error': 'Invalid JSON data in request'}), 400
 
 
 @app.route('/ca', methods=['POST'])
 def createAssignment():
     if request.is_json:
         data = request.json
+        if data:
+            name = data.get("name")
+            description = data.get("description")
+            duration = data.get("duration")
+            agents = data.get("agents")
+            course_name = data.get("course_name")
+            lecture_name = data.get("lecture_name")
+            owner = data.get("owner")
 
-        name = data.get("name")
-        description = data.get("description")
-        duration = data.get("duration")
-        agents = data.get("agents")
-        course_name = data.get("course_name")
-        lecture_name = data.get("lecture_name")
-        owner = data.get("owner")
-
-        if name and description and duration and course_name and lecture_name and owner:
-            create_status = mongodb.createAssignment(name, description, duration, agents, course_name, lecture_name, owner)
-            return jsonify({}), 200 if create_status else 400
-        else:
-            return jsonify({'error': 'Invalid data. All fields are required.'}), 400
+            if name and description and duration and course_name and lecture_name and owner:
+                create_status = mongodb.createAssignment(name, description, duration, agents, course_name, lecture_name, owner)
+                return jsonify({}), 200 if create_status else 400
+            else:
+                return jsonify({'error': 'Invalid data. All fields are required.'}), 400
 
     else:
         return jsonify({'error': 'Invalid JSON data in request'}), 400
+    return jsonify({'error': 'Invalid JSON data in request'}), 400
 
 
 @app.route('/cu', methods=['POST'])
@@ -207,7 +214,38 @@ def getAssignment():
         return jsonify({"error": "Server error"}), 400
     return jsonify({"error": "Assignment ID parameter missing"}), 400
 
+@app.route('/getCourseInfo', methods=['GET'])
+def getCousreInfo():
+    try:
+        cid = request.args.get("cid")
+        if cid:
+            return jsonify(mongodb.getCourseInfo(cid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
 
+@app.route('/getLectureInfo', methods=['GET'])
+def getLectureInfo():
+    try:
+        lid = request.args.get("lid")
+        if lid:
+            return jsonify(mongodb.getCourseInfo(lid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
+
+@app.route('/getAssignmentInfo', methods=['GET'])
+def getAssignmentInfo():
+    try:
+        aid = request.args.get("aid")
+        if aid:
+            return jsonify(mongodb.getCourseInfo(aid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
 
 
 

@@ -67,7 +67,7 @@ export const getAssignment = async (aid) => {
 };
 
 
-export const createUser = async(username, password) => {
+export const createUser2 = async(username, password) => {
   try {
     const res = await axios.post('/createUser', {username: username, password:password}, {
       headers: {
@@ -163,5 +163,47 @@ export const createUser = async (name) => {
   } catch (error) {
     console.error('Error creating user:', error);
     throw error;
+  }
+};
+
+
+export const getCourseInfo = async (cid) => {
+  const params = new URLSearchParams({ cid });
+  const url = `http://127.0.0.1:60000/getCourseInfo?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);  
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching course info:', error);
+    return null;
+  }
+};
+
+export const getLectureInfo = async (lid) => {
+  const params = new URLSearchParams({ lid });
+  const url = `http://127.0.0.1:60000/getLectureInfo?${params.toString()}`;
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);  
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching lecture info:', error);
+    return null;
+  }
+};
+
+export const getAssignmentInfo = async (aid) => {
+  const params = new URLSearchParams({ aid });
+  const url = `http://127.0.0.1:60000/getAssignmentInfo?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);  
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching assignment info:', error);
+    return null;
   }
 };
