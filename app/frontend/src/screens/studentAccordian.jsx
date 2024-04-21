@@ -2,7 +2,7 @@ import './StudentAccordian.css';
 import React, { useState } from 'react';
 import DropArrow from '../assets/DropArrow.png';
 
-export default function StudentAccordian() {
+export default function StudentAccordian({ lectureNumber, lectureName, lectureContent }) {
 
     const [isContentVisible, setIsContentVisible] = useState(false);
 
@@ -19,15 +19,15 @@ export default function StudentAccordian() {
                         <img src={DropArrow} alt='Drop Arrow' />
                     </div>
                     <div className='lecture_title_text'>
-                        <p className='lecture_title_number'> 1.1 </p>
-                        <p className='lecture_title_name'> Introduction to the Course </p>
+                        <p className='lecture_title_number'> {lectureNumber} </p>
+                        <p className='lecture_title_name'> {lectureName} </p>
                     </div>
                 </div>
 
                 {isContentVisible && (
                     <div className='lecture_content'>
                         <div className='lecture_content_text'>
-                            The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.
+                            {lectureContent}
                         </div>
                         <div className='lecture_content_button'>
                             <button className='lecture_content_button_view'> Begin Lecture </button>

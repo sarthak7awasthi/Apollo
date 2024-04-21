@@ -1,6 +1,8 @@
 .student_accordian_container{
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
     /* background-color: green; */
 }
 
@@ -52,6 +54,7 @@
     background-color: #fff;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
+    margin-bottom: 20px;
 }
 
 .lecture_content_text{

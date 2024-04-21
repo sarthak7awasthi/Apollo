@@ -48,6 +48,34 @@ export default function StudentScreen() {
         studentImg: '../assets/UserPhoto.png'
     }
 
+    const lectureList = [
+        {
+            lectureNumber: '1.1',
+            lectureName: 'Introduction to the Course',
+            lectureContent: 'The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.'
+        },
+        {
+            lectureNumber: '1.2',
+            lectureName: 'Second Thing',
+            lectureContent: 'The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.'
+        },
+        {
+            lectureNumber: '1.3',
+            lectureName: 'Third THing',
+            lectureContent: 'The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.'
+        },
+        {
+            lectureNumber: '1.4',
+            lectureName: 'Fourth Thing',
+            lectureContent: 'The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.'
+        },
+        {
+            lectureNumber: '1.5',
+            lectureName: 'Fifth Thing',
+            lectureContent: 'The chapter on "Programming Languages" in CS 164 Introduction to Programming Concepts explores the fundamental concepts and characteristics of various programming languages. It delves into the role of programming languages in software development and their impact on solving computational problems efficiently.'
+        },
+    ];
+
     return (
         // <div>
         //     Student Page
@@ -92,7 +120,14 @@ export default function StudentScreen() {
                 <div className='right_pannel'>
                     <StudentNav studentInfo={studentInfo}/>
                     <div className='right_component_placeholder'>
-                        <StudentAccordian />
+                        {lectureList.map((lectureItem, index) => (
+                            <StudentAccordian 
+                                key={index}
+                                lectureNumber={lectureItem.lectureNumber}
+                                lectureName={lectureItem.lectureName}
+                                lectureContent={lectureItem.lectureContent}
+                            />
+                        ))}
                         
                     </div>
                 </div>
