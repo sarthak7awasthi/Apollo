@@ -15,7 +15,7 @@ export default function StudentScreen() {
     const handleAssignmentPage = () => {
         navigate('/assignmentPage');
     }
-
+    
     // to map all the classes in the left menu
     const classList = [
         {
@@ -37,8 +37,8 @@ export default function StudentScreen() {
             classImage: '../assets/class-img-4.png',
             className: 'CS 164',
             professor: 'Prof. Bob Brown'
-        }
-
+        },
+        
       ];
 
     const studentInfo = {

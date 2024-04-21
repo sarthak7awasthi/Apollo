@@ -1,5 +1,9 @@
 import './navbar.css';
 
+// import GradeIcon from './assets/GradesIcon.png';
+// import ContentIcon from '../assets/BookIcon.png';
+// import HelpIcon from '../assets/HelpIcon.png';
+
 export default function Navbar({ studentInfo }) {
     
     console.log(studentInfo);
@@ -15,12 +19,19 @@ export default function Navbar({ studentInfo }) {
                 </div>
             </div>
             <div className='searchBox'>
-                Search
+                <input className='searchBar' type='text' placeholder='Search course content...' />
             </div>
             <div className='navButtons'>
-                Grades 
-                Content
-                Help 
+                <div className='gadeButton'>
+                    {/* <img src={GradeIcon} alt='Grade' /> */}
+                    <p> Grade </p> 
+                </div>
+                <div className='contentButton'>
+                    <p> Content </p> 
+                </div>
+                <div className='helpButton'>
+                    <p> Help </p> 
+                </div>
             </div>
         </div>
     )
