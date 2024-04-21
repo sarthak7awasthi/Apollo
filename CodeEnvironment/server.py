@@ -166,52 +166,47 @@ def getCourses():
 @app.route('/getUsersCourses', methods=['GET'])
 def getUsersCourses():
     try:
-        if request.is_json:
-            data = request.json
-            if data:
-                name = data.get("name")
-                return jsonify(mongodb.getUsersCourses(name)), 200
-    except Exception:
-        return jsonify({}), 400
-    return jsonify({}), 400
+        name = request.args.get("name")
+        if name:
+            return jsonify(mongodb.getUsersCourses(name)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Bad request"}), 400
+    return jsonify({"error": "Name parameter missing"}), 400
 
 @app.route('/getLectures', methods=['GET'])
 def getLectures():
     try:
-        if request.is_json:
-            data = request.json
-            if data:
-                cid = data.get("cid")
-                return jsonify(mongodb.getLectures(cid)), 200
-    except Exception:
-        return jsonify({}), 400
-    return jsonify({}), 400
-
+        cid = request.args.get("cid")
+        if cid:
+            return jsonify(mongodb.getLectures(cid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Course ID parameter missing"}), 400
 
 @app.route('/getAssignments', methods=['GET'])
 def getAssignments():
     try:
-        if request.is_json:
-            data = request.json
-            if data:
-                lid = data.get("lid")
-                return jsonify(mongodb.getAssignments(lid)), 200
-    except Exception:
-        return jsonify({}), 400
-    return jsonify({}), 400
-
+        lid = request.args.get("lid")
+        if lid:
+            return jsonify(mongodb.getAssignments(lid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Lecture ID parameter missing"}), 400
 
 @app.route('/getAssignment', methods=['GET'])
 def getAssignment():
     try:
-        if request.is_json:
-            data = request.json
-            if data:
-                aid = data.get("aid")
-                return jsonify(mongodb.getAssignment(aid)), 200
-    except Exception:
-        return jsonify({}), 400
-    return jsonify({}), 400
+        aid = request.args.get("aid")
+        if aid:
+            return jsonify(mongodb.getAssignment(aid)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
+
 
 
 

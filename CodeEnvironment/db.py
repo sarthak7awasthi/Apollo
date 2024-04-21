@@ -228,10 +228,6 @@ class Mongo:
 
 
 
-# get assignmetns given a id
-
-
-
 
 
 #insert one vs insert many
