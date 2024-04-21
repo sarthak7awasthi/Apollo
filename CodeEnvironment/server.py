@@ -267,12 +267,25 @@ def getUsers():
     except Exception:
         return jsonify({}), 400
 
-@app.route('/getUser', methods=['GET'])
-def getUser():
+@app.route('/getUserByName', methods=['GET'])
+def getUserByName():
     try:
         name = request.args.get("name")
         if name:
-            return jsonify(mongodb.getUser(name)), 200
+            return jsonify(mongodb.getUserByName(name)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
+
+
+@app.route('/getUserByID', methods=['GET'])
+def getUserByID():
+    try:
+        uid = request.args.get("uid")
+        if uid:
+            print(uid)
+            return jsonify(mongodb.getUserByID(uid)), 200
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Server error"}), 400

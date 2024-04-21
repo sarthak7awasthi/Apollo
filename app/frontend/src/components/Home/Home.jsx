@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { getUsersCourses, getCourseInfo, getUser } from '../../api';
+import { getAllCourses, getUsersCourses, getCourseInfo, getUser } from '../../api';
+import { CourseCard } from '../CourseCard/CourseCard';
 
 export const Home = () => {
     const [courses, setCourses] = useState([]);
@@ -8,8 +9,9 @@ export const Home = () => {
     const fetchCourses = async () => {
         try {
             // This now directly sets state for all courses fetched via the dedicated API endpoint
-            const response = await axios.get("http://127.0.0.1:60000/getCourses");
-            const coursesData = response.data.map(id => ({ id, name: 'Loading...' }));
+            const response = await getAllCourses();
+          console.log(response);
+            const coursesData = response.map(id => ({ id, name: 'Loading...' }));
             const user = await getUser("erick");
           console.log(user);
             setCourses(coursesData); // Assume this is an array of course IDs initially
@@ -36,10 +38,7 @@ export const Home = () => {
                 <div>
                     <h2>Courses</h2>
                     {courses.map(course => (
-                        <div>
-                        <h1 key={course.id}>{course.name}</h1>
-                        <h2> {course.description}</h2>
-                      </div>
+                      <CourseCard key={course.id} course={course} />
                     ))}
                 </div>
             ) : (

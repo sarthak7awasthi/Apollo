@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useFirebaseAuth } from './Firebase/useFirebaseAuth';
 
-function Login() {
+export function Login() {
   const { signIn, authError } = useFirebaseAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

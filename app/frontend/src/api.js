@@ -220,7 +220,22 @@ export const getAllUsers = async () => {
 
 export const getUser= async (name) => {
   const params = new URLSearchParams({ name });
-  const url = `http://127.0.0.1:60000/getUser?${params.toString()}`;
+  const url = `http://127.0.0.1:60000/getUserByName?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);  
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching assignment info:', error);
+    return null;
+  }
+};
+
+
+export const getUserByID= async (uid) => {
+  const params = new URLSearchParams({ uid });
+  const url = `http://127.0.0.1:60000/getUserByiD?${params.toString()}`;
 
   try {
     const response = await axios.get(url);
