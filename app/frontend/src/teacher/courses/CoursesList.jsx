@@ -15,7 +15,7 @@ const CoursesList = () => {
   const studentInfo = {
     Name: 'Joana Stuart',
     ID: '123456789',
-    studentImg: Logo
+
   };
 
   const handleCreate = () => {
