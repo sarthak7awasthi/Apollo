@@ -158,7 +158,8 @@ def createUser():
 @app.route('/getCourses', methods=['GET'])
 def getCourses():
     try:
-        return jsonify(mongodb.getAllCourses()), 200
+        all_courses = mongodb.getAllCourses()
+        return jsonify(all_courses), 200
     except Exception:
         return jsonify({}), 400
 

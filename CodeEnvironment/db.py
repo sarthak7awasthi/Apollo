@@ -1,5 +1,9 @@
 import os
+from flask import jsonify
 from pymongo import MongoClient
+from bson.objectid import ObjectId
+from bson import json_util
+import json
 
 class Mongo:
     def __init__(self, uri: str, db_name: str):
@@ -182,35 +186,44 @@ class Mongo:
     def getAllCourses(self):
         course_collection = self.getCollection("Courses")
         all_course_ids = course_collection.find({}, {"_id": 1})
-        course_ids_list = [course['_id'] for course in all_course_ids]
+        course_ids_list = [str(course['_id']) for course in all_course_ids]
         return course_ids_list
 
     def getUsersCourses(self, name):
         course_collection = self.getCollection("Courses")
         courses = course_collection.find({"owner": name})
-        course_ids_list = [course['_id'] for course in courses]
+        course_ids_list = [str(course['_id']) for course in courses]
         return course_ids_list
 
     def getLectures(self, course_id):
         courses_collection = self.getCollection("Courses")
+        course_id = ObjectId(course_id)
         course = courses_collection.find_one({"_id": course_id}, {"lectures": 1})
         if course and 'lectures' in course:
-            return course['lectures']
+            str_lec = []
+            for c in course['lectures']:
+                str_lec.append(str(c))
+            return str_lec 
         else:
             return []
 
     def getAssignments(self, lecture_id):
         lecture_collection = self.getCollection("Lectures")
+        lecture_id = ObjectId(lecture_id)
         lecture = lecture_collection.find_one({"_id": lecture_id}, {"assignments": 1})
         if lecture and 'assignments' in lecture:
-            return lecture['assignments']
+            str_assign = []
+            for l in lecture['assignments']:
+                str_assign.append(str(l))
+                return str_assign
         else:
             return []
 
     def getAssignment(self, assignment_id):
         assignment_collection = self.getCollection('Assignments')
+        assignment_id = ObjectId(assignment_id)
         assignment = assignment_collection.find_one({"_id": assignment_id})
-        return assignment
+        return json.loads(json_util.dumps(assignment))
 
 
 
