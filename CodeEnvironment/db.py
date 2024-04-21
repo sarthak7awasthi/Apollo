@@ -142,7 +142,7 @@ class Mongo:
             print(e)
             return False
 
-    def createAssignment(self, name: str, description: str, duration: int, agents: list, course_name: str, lecture_name: str, owner: str) -> bool:
+    def createAssignment(self, name: str, description: str, duration: int, agents: str, course_name: str, lecture_name: str, owner: str) -> bool:
         course_id = None
         lecture_id = None
         course_collection = self.getCollection("Courses")

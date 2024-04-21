@@ -228,7 +228,7 @@ def test():
     print(assignments)
     assignment = mongodb.getAssignment(assignments[0])
     print(assignment)
-    return ""
+    return jsonify(assignment)
     
 
 if __name__ == '__main__':
