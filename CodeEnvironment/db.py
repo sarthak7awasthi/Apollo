@@ -56,57 +56,56 @@ class Mongo:
             return courses.find_one({"name": name})
 
 
-    def createCourse(self, name: str, owner:str, language:str, description: str) -> bool:
-
-        query = {"name": name, "owner": owner}
+    def createCourse(self, name: str, owner: str, language: str, description: str) -> bool:
+        if not owner:
+            return False
+    
+        user = self.getUser(owner)
+        if not user:
+            return False
+    
+        query = {"name": name, "owner": user["_id"]}
         if self.__db['Courses'].count_documents(query) > 0:
             print("A course with the same name and owner already exists.")
             return False
-
+    
         course = {
-                "name":name,
-                "owner": owner,
-                "language": language,
-                "description": description,
-                "lectures": [],
-                }
-
+            "name": name,
+            "owner": user["_id"],
+            "language": language,
+            "description": description,
+            "lectures": [],
+        }
+    
         try:
             collection = self.getCollection("Courses")
-            collection.insert_one(course)
-            return True
-
+            result = collection.insert_one(course)
+            if result.inserted_id:
+                # Append the course ID to the user's courses list
+                self.__db['Users'].update_one(
+                    {"_id": user["_id"]},
+                    {"$push": {"courses": result.inserted_id}}
+                )
+                return True
         except:
             return False
-
-    def createCourse2(self, name: str, owner:str, language:str, description: str) -> bool:
-        user = self.getUser(owner)
-        course_collection = self.getCollection("Courses")
-        if user:
-            if not self.getCourse(user, name):
-                course = {
-                        "owner": user,
-                        "name": name,
-                        "description": description,
-                        "language": language,
-                        "lectures": []
-                }
-                course = course_collection.insert_one(course)
-                user.update_one()
-                user["courses"].append(course)
-                return True
-
         return False
-
-
+    
     #need assignments table
 
     def createLecture(self, course_name: str, name: str, description: str, content: str, duration: int, resources: list, owner: str) -> bool:
+        if not owner:
+            return False
+
+        user = self.getUser(owner)
+        if not user:
+            return False
+
         course_id = None
         course = None
         course_collection = self.getCollection("Courses")
         try:
-            course = course_collection.find_one({'name': course_name, 'owner': owner})
+            course = course_collection.find_one({'name': course_name, 'owner': user['_id']})
             if course:
                 course_id = course['_id']
                 query = {"course": course_id, "name": name}
@@ -124,7 +123,7 @@ class Mongo:
                 lecture = {
                         "course": course_id,
                         "name": name,
-                        "owner": owner,
+                        "owner": user['_id'],
                         "description": description,
                         "content": content,
                         "duration": duration,
@@ -152,8 +151,13 @@ class Mongo:
         course_collection = self.getCollection("Courses")
         lectures_collection = self.getCollection("Lectures")
         assignment_collection = self.getCollection("Assignments")
+        if not owner:
+            return False
+        user = self.getUser(owner)
+        if not user:
+            return False
         try:
-            course = course_collection.find_one({'name': course_name, 'owner': owner})
+            course = course_collection.find_one({'name': course_name, 'owner': user['_id']})
             if course:  
                 course_id = course['_id']
                 print(course_id)
@@ -172,7 +176,7 @@ class Mongo:
                         "description": description,
                         "durtion": duration,
                         "agents": agents,
-                        "owner": owner
+                        "owner": user['_id'] 
                     }
                     res = assignment_collection.insert_one(assignment)
                     lectures_collection.update_one({"_id": lecture_id}, {"$push": {"assignments": res.inserted_id}})

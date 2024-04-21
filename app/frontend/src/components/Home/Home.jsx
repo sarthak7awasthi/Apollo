@@ -20,7 +20,7 @@ export const Home = () => {
     // useEffect to run once on component mount
     useEffect(() => {
         getUsersCourses("erick");
-        getCourseInfo("66246232a3d009d1364dc959");
+        getCourseInfo("6624b2482b5f15f584fc1ecc");
         fetchCourses();
     }, []); // Empty dependency array means this effect runs only once after the initial render
 
