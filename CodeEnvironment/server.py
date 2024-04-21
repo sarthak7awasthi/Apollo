@@ -1,6 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import subprocess
 from flask_cors import CORS
+from manim_runner import text_to_animation
+from gpt_utils import create_content
+
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +20,27 @@ def run_code():
         return execute_c_code(code)
     else:
         return jsonify({'error': 'Invalid language specified'}), 400
+
+
+@app.route('/manim', methods=['POST'])
+def run_manim():
+    data = request.json
+    prompt = data.get('prompt') # LLM prompt to generate Animation code
+    path_to_vid = text_to_animation(prompt)
+
+    if not path_to_vid:
+        return jsonify({'error': 'Error generating animation'}), 400
+    return send_file(path_to_vid, as_attachment=False)
+
+@app.route('/create-course', methods=['POST'])
+def create_course():
+    data_populated = create_content(request.json)
+
+    if data_populated:
+        return jsonify(data_populated), 200
+    else:
+        return jsonify({'error': 'Error creating course content'}), 400
+    
 
 def execute_python_code(code):
     try:
@@ -68,5 +92,5 @@ def execute_c_code(code):
         subprocess.run(['rm', '-f', 'temp.c', 'temp'])
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=5001, debug=True)
 
