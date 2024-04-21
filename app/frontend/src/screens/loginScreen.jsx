@@ -20,7 +20,7 @@ export default function LoginScreen() {
     };
 
     const handleTeacherLogin = () => {
-        Navigate('/Courses');
+        Navigate('/teacherPage');
     };
 
     const handleStudentLogin = () => {

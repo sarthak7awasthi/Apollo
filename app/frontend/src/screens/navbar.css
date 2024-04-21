@@ -1,5 +1,5 @@
 .navbar_container{
-    background-color: green;
+    background-color: white;
     width: 100%;
     height: 10%;
     display: flex;
@@ -32,4 +32,48 @@
 
 .userName p{
     margin-top: 5px;
+}
+
+.searchBox{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 350px;
+}
+
+.searchBar{
+    background-color: white;
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 5px;
+    padding-left: 20px;
+}
+
+.navButtons{
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    justify-content: space-between;
+    width: 400px;
+}
+
+.gradeButton{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.gradeButton :hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.gradeButton img{
+    margin-right: 10px;
 }
