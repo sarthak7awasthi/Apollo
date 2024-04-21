@@ -242,7 +242,7 @@ def getLectureInfo():
     try:
         lid = request.args.get("lid")
         if lid:
-            return jsonify(mongodb.getCourseInfo(lid)), 200
+            return jsonify(mongodb.getLectureInfo(lid)), 200
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": "Server error"}), 400
@@ -258,6 +258,43 @@ def getAssignmentInfo():
         print(f"Error: {e}")
         return jsonify({"error": "Server error"}), 400
     return jsonify({"error": "Assignment ID parameter missing"}), 400
+
+@app.route('/getUsers', methods=['GET'])
+def getUsers():
+    try:
+        all_users = mongodb.getALlUsers()
+        return jsonify(all_users), 200
+    except Exception:
+        return jsonify({}), 400
+
+@app.route('/getUser', methods=['GET'])
+def getUser():
+    try:
+        name = request.args.get("name")
+        if name:
+            return jsonify(mongodb.getUser(name)), 200
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"error": "Server error"}), 400
+    return jsonify({"error": "Assignment ID parameter missing"}), 400
+
+
+
+@app.route('/editLectureContent', methods=['POST'])
+def editLectureContent():
+    if request.is_json:
+        data = request.get_json() 
+        lecture_id = data.get("lecture_id")
+        content = data.get("content")
+        if lecture_id and content:
+            successful = mongodb.editLectureContent(lecture_id, content)
+            if successful:
+                return jsonify({"message": "Lecture content updated successfully"}), 200
+            else:
+                return jsonify({"error": "Failed to update lecture content"}), 400
+        else:
+            return jsonify({"error": "Missing lecture ID or content"}), 400
+    return jsonify({"error": "Invalid JSON data"}), 400
 
 
 

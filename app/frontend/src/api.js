@@ -207,3 +207,50 @@ export const getAssignmentInfo = async (aid) => {
     return null;
   }
 };
+
+export const getAllUsers = async () => {
+  try{
+    const res = await axios.get("http://127.0.0.1:60000/getUsers");
+    return res.data;
+  }catch (err){
+    return {};
+  }
+};
+
+
+export const getUser= async (name) => {
+  const params = new URLSearchParams({ name });
+  const url = `http://127.0.0.1:60000/getUser?${params.toString()}`;
+
+  try {
+    const response = await axios.get(url);
+    console.log(response.data);  
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching assignment info:', error);
+    return null;
+  }
+};
+
+
+
+export const editLectureContent = async (lectureId, newContent) => {
+  const url = `http://127.0.0.1:60000/editLectureContent`;
+  const data = {
+    lecture_id: lectureId,
+    content: newContent
+  };
+
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log("Update Response:", response.data);  // Log the response from the server
+    return response.data;  // Return the response from the server
+  } catch (error) {
+    console.error('Error updating lecture content:', error);
+    return null;  // Return null or handle error as needed
+  }
+};

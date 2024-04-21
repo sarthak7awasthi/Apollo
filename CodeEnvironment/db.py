@@ -219,6 +219,12 @@ class Mongo:
         else:
             return []
 
+    def getLecture(self, lecture_id):
+        lecture_collection = self.getCollection("Lectures")
+        lecture_id = ObjectId(lecture_id)
+        lecture = lecture_collection.find_one({"_id": lecture_id})
+        return json.loads(json_util.dumps(lecture))
+
     def getAssignment(self, assignment_id):
         assignment_collection = self.getCollection('Assignments')
         assignment_id = ObjectId(assignment_id)
@@ -240,8 +246,32 @@ class Mongo:
     def getAssignmentInfo(self, assignment_id):
         assignment_collection = self.getCollection("Assignments")
         assignment_id = ObjectId(assignment_id)
+        print(assignment_id)
         assignment = assignment_collection.find_one({"_id": assignment_id})
         return json.loads(json_util.dumps(assignment))
+
+    def getALlUsers(self):
+        users_collection = self.getCollection("Users")
+        users = users_collection.find()
+        print(users)
+        return json.loads(json_util.dumps(users))
+
+    def getUser(self, username):
+        user_collection = self.getCollection("Users")
+        user = user_collection.find_one({"name": username})
+        return json.loads(json_util.dumps(user))
+
+    def editLectureContent(self, lecture_id, content):
+        lecture_collection = self.getCollection("Lectures")
+        try:
+            result = lecture_collection.update_one(
+                {"_id": ObjectId(lecture_id)},  
+                {"$set": {"content": content}}
+            )
+            return result.modified_count > 0  
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return False
 
 
 
