@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/Logo.png';
 
 import StudentNav from './navbar.jsx';
+import StudentAccordian from './studentAccordian.jsx';
 
 
 export default function StudentScreen() {
@@ -15,7 +16,7 @@ export default function StudentScreen() {
     const handleAssignmentPage = () => {
         navigate('/assignmentPage');
     }
-    
+
     // to map all the classes in the left menu
     const classList = [
         {
@@ -90,6 +91,10 @@ export default function StudentScreen() {
                 </div>
                 <div className='right_pannel'>
                     <StudentNav studentInfo={studentInfo}/>
+                    <div className='right_component_placeholder'>
+                        <StudentAccordian />
+                        
+                    </div>
                 </div>
             </div>
         </div>

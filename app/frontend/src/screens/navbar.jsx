@@ -1,8 +1,8 @@
 import './navbar.css';
 
-// import GradeIcon from './assets/GradesIcon.png';
-// import ContentIcon from '../assets/BookIcon.png';
-// import HelpIcon from '../assets/HelpIcon.png';
+import GradeIcon from '../assets/GradesIcon.png';
+import ContentIcon from '../assets/BookIcon.png';
+import HelpIcon from '../assets/HelpIcon.png';
 
 export default function Navbar({ studentInfo }) {
     
@@ -22,15 +22,17 @@ export default function Navbar({ studentInfo }) {
                 <input className='searchBar' type='text' placeholder='Search course content...' />
             </div>
             <div className='navButtons'>
-                <div className='gadeButton'>
-                    {/* <img src={GradeIcon} alt='Grade' /> */}
-                    <p> Grade </p> 
+                <div className='gradeButton'>
+                    <img src={GradeIcon} alt='Grades' />
+                    <p> Grades </p>
                 </div>
-                <div className='contentButton'>
-                    <p> Content </p> 
+                <div className='gradeButton'>
+                    <img src={ContentIcon} alt='Content' />
+                    <p> Course </p>
                 </div>
-                <div className='helpButton'>
-                    <p> Help </p> 
+                <div className='gradeButton'>
+                    <img src={HelpIcon} alt='Help' />
+                    <p> Help </p>
                 </div>
             </div>
         </div>
