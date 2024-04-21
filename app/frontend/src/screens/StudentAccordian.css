@@ -1,0 +1,85 @@
+.student_accordian_container{
+    height: 100%;
+    width: 100%;
+    /* background-color: green; */
+}
+
+.lecture_container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* background-color: thistle; */
+}
+
+.lecture_title{
+    background-color: #fff;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.lecture_title:hover{
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.lecture_title_arrow{
+    margin-left: 20px;
+    margin-right: 40px;
+}
+
+.lecture_title_text{
+    display: flex;
+    flex-direction: row;
+}
+
+.lecture_title_number{
+    color: #FF7451;
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.lecture_title_name{
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.lecture_content{
+    background-color: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.lecture_content_text{
+    margin-left: 80px;
+    width: 400px;
+    margin-top: 20px;
+    text-align: justify;
+}
+
+.lecture_content_button{
+    margin-bottom: 30px;
+    margin-left: 80px;
+    margin-top: 20px;
+    width: 400px;
+    height: 40px;
+    /* background-color: yellow; */
+}
+
+.lecture_content_button_view{
+    width: 100%;
+    height: 100%;
+    color: white;
+    border: 0px;
+    border-radius: 10px;
+    background-color: #04B25F;
+}
+
+.lecture_content_button_view:hover{
+    cursor: pointer;
+    background-color: #049b52;
+}
