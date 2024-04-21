@@ -247,6 +247,14 @@ def getAssignmentInfo():
         return jsonify({"error": "Server error"}), 400
     return jsonify({"error": "Assignment ID parameter missing"}), 400
 
+@app.route('/getUsers', methods=['GET'])
+def getUsers():
+    try:
+        all_users = mongodb.getALlUsers()
+        return jsonify(all_users), 200
+    except Exception:
+        return jsonify({}), 400
+
 
 
 @app.route("/test")

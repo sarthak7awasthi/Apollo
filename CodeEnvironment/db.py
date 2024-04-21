@@ -247,6 +247,12 @@ class Mongo:
         assignment = assignment_collection.find_one({"_id": assignment_id})
         return json.loads(json_util.dumps(assignment))
 
+    def getALlUsers(self):
+        users_collection = self.getCollection("Users")
+        users = users_collection.find()
+        print(users)
+        return json.loads(json_util.dumps(users))
+
 
 
 
