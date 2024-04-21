@@ -24,6 +24,32 @@ class Mongo:
         return self.__db[collection_name]
 
 
+#user related
+    def createUser(self, username: str) -> bool:
+        if username:
+            users_collection = self.getCollection("Users")
+            try:
+                if users_collection.count_documents({"name": username}) == 0:
+                    user = {
+                            "name": username,
+                            "courses": []
+                    }
+                    users_collection.insert_one(user)
+                    return True
+            except Exception:
+                print("Error creating user")
+        return False
+
+    def getUser(self, name: str):
+        users_colleciton = self.getCollection("Users")
+        user = users_colleciton.find_one({"name": name})
+        return user
+
+#course related
+    def getCourse(self, user, name: str):
+        if user:
+            courses = user["courses"]
+            return courses.find_one({"name": name})
 
 
     def createCourse(self, name: str, owner:str, language:str, description: str) -> bool:
@@ -48,6 +74,26 @@ class Mongo:
 
         except:
             return False
+
+    def createCourse2(self, name: str, owner:str, language:str, description: str) -> bool:
+        user = self.getUser(owner)
+        course_collection = self.getCollection("Courses")
+        if user:
+            if not self.getCourse(user, name):
+                course = {
+                        "owner": user,
+                        "name": name,
+                        "description": description,
+                        "language": language,
+                        "lectures": []
+                }
+                course = course_collection.insert_one(course)
+                user.update_one()
+                user["courses"].append(course)
+                return True
+
+        return False
+
 
     #need assignments table
 
@@ -104,7 +150,7 @@ class Mongo:
         assignment_collection = self.getCollection("Assignments")
         try:
             course = course_collection.find_one({'name': course_name, 'owner': owner})
-            if course:
+            if course:  
                 course_id = course['_id']
                 print(course_id)
                 print(lecture_name)
@@ -121,7 +167,8 @@ class Mongo:
                         "lecture": lecture_id,
                         "description": description,
                         "durtion": duration,
-                        "agents": agents
+                        "agents": agents,
+                        "owner": owner
                     }
                     res = assignment_collection.insert_one(assignment)
                     lectures_collection.update_one({"_id": lecture_id}, {"$push": {"assignments": res.inserted_id}})
@@ -132,6 +179,43 @@ class Mongo:
 
         return False
 
+    def getAllCourses(self):
+        course_collection = self.getCollection("Courses")
+        all_course_ids = course_collection.find({}, {"_id": 1})
+        course_ids_list = [course['_id'] for course in all_course_ids]
+        return course_ids_list
+
+    def getUsersCourses(self, name):
+        course_collection = self.getCollection("Courses")
+        courses = course_collection.find({"owner": name})
+        course_ids_list = [course['_id'] for course in courses]
+        return course_ids_list
+
+    def getLectures(self, course_id):
+        courses_collection = self.getCollection("Courses")
+        course = courses_collection.find_one({"_id": course_id}, {"lectures": 1})
+        if course and 'lectures' in course:
+            return course['lectures']
+        else:
+            return []
+
+    def getAssignments(self, lecture_id):
+        lecture_collection = self.getCollection("Lectures")
+        lecture = lecture_collection.find_one({"_id": lecture_id}, {"assignments": 1})
+        if lecture and 'assignments' in lecture:
+            return lecture['assignments']
+        else:
+            return []
+
+    def getAssignment(self, assignment_id):
+        assignment_collection = self.getCollection('Assignments')
+        assignment = assignment_collection.find_one({"_id": assignment_id})
+        return assignment
+
+
+
+
+# get assignmetns given a id
 
 
 

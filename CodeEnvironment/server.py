@@ -126,7 +126,6 @@ def createLecture():
 def createAssignment():
     if request.is_json:
         data = request.json
-        print(data)
 
         name = data.get("name")
         description = data.get("description")
@@ -146,9 +145,90 @@ def createAssignment():
         return jsonify({'error': 'Invalid JSON data in request'}), 400
 
 
+@app.route('/cu', methods=['POST'])
+def createUser():
+    if request.is_json:
+        data = request.json
+        if data:
+            name = data.get("name")
+            return jsonify({}), 200 if mongodb.createUser(name) else 400
+    return jsonify({}, 400)
+
+
+@app.route('/getCourses', methods=['GET'])
+def getCourses():
+    try:
+        return jsonify(mongodb.getAllCourses()), 200
+    except Exception:
+        return jsonify({}), 400
+
+@app.route('/getUsersCourses', methods=['GET'])
+def getUsersCourses():
+    try:
+        if request.is_json:
+            data = request.json
+            if data:
+                name = data.get("name")
+                return jsonify(mongodb.getUsersCourses(name)), 200
+    except Exception:
+        return jsonify({}), 400
+    return jsonify({}), 400
+
+@app.route('/getLectures', methods=['GET'])
+def getLectures():
+    try:
+        if request.is_json:
+            data = request.json
+            if data:
+                cid = data.get("cid")
+                return jsonify(mongodb.getLectures(cid)), 200
+    except Exception:
+        return jsonify({}), 400
+    return jsonify({}), 400
+
+
+@app.route('/getAssignments', methods=['GET'])
+def getAssignments():
+    try:
+        if request.is_json:
+            data = request.json
+            if data:
+                lid = data.get("lid")
+                return jsonify(mongodb.getAssignments(lid)), 200
+    except Exception:
+        return jsonify({}), 400
+    return jsonify({}), 400
+
+
+@app.route('/getAssignment', methods=['GET'])
+def getAssignment():
+    try:
+        if request.is_json:
+            data = request.json
+            if data:
+                aid = data.get("aid")
+                return jsonify(mongodb.getAssignment(aid)), 200
+    except Exception:
+        return jsonify({}), 400
+    return jsonify({}), 400
 
 
 
+
+@app.route("/test")
+def test():
+    lec_ids = mongodb.getUsersCourses("erick")
+    print(lec_ids)
+    print(lec_ids[0])
+    print(type(lec_ids[0]))
+    lec = mongodb.getLectures(lec_ids[0])
+    print(lec)
+    print(lec[0])
+    assignments = mongodb.getAssignments(lec[0])
+    print(assignments)
+    assignment = mongodb.getAssignment(assignments[0])
+    print(assignment)
+    return ""
     
 
 if __name__ == '__main__':
