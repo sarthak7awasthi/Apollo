@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import CoursesList from './teacher/courses/CoursesList';
 import LoginScreen from './screens/loginScreen';
 import StudentScreen from './screens/studentScreen';
 import TeacherScreen from './screens/teacherScreen';
@@ -31,6 +31,22 @@ function App() {
       lectureResources: ['video.mp4', 'code.zip'],
     }
   ];
+
+
+  const coursesData = [
+    {
+      lectureName: 'Introduction to MongoDB',
+      lectureDescription: 'This lecture covers the basics of React.js',
+      lectureDuration: '1 hour',
+      lectureResources: ['slides.pdf', 'code.zip'],
+    },
+    {
+      lectureName: 'State Management in Java',
+      lectureDescription: 'Learn how to manage state in React applications',
+      lectureDuration: '45 minutes',
+      lectureResources: ['video.mp4', 'code.zip'],
+    }
+  ];
   return (
     <div className="App">
       <Routes>
@@ -49,6 +65,7 @@ function App() {
 
         <Route path="/CreateCourse" element={<CreateCourse />} />
         <Route path="/CreateLecture" element={<CreateLecture />} />
+        <Route path="/Courses" element={<CoursesList courseName="Advanced React Course" lectures={coursesData}/>} />
 
 
         

@@ -1,8 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LecturePage.css';
 
 const LecturesPage = ({ courseName, lectures }) => {
-  return (
+  const handleCreate = () => {
+    Navigate('/Lectures');
+};
+
+  const Navigate = useNavigate(); 
+  return (<>
+    <button onClick={handleCreate}>Create Course</button>
     <div className="container">
       <h1 className="course-title">{courseName}</h1>
       <div className="lecture-cards-container">
@@ -22,6 +29,7 @@ const LecturesPage = ({ courseName, lectures }) => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

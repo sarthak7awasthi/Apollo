@@ -27,7 +27,7 @@ const CreateCourse = () => {
       });
       
       if (response.ok) {
-        Navigate('/studentPage');
+        Navigate('/Courses');
 
 
 
@@ -45,7 +45,7 @@ const CreateCourse = () => {
 
   const handleCancel = () => {
     // Redirect back to home screen
-    Navigate('/studentPage');
+    Navigate('/Courses');
   };
 
   return (
